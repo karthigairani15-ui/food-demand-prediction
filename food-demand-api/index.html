@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Demand Prediction</title>
+</head>
+<body>
+
+    <h2>🍽️ Food Demand Prediction</h2>
+
+    <!-- Dropdown for item -->
+    <label>Select Item:</label>
+    <select id="item">
+        <option value="Biryani">Biryani</option>
+        <option value="Dosa">Dosa</option>
+        <option value="Parotta">Parotta</option>
+        <option value="Fried Rice">Fried Rice</option>
+        <option value="Meals">Meals</option>
+    </select>
+
+    <br><br>
+
+    <!-- Date Picker -->
+    <label>Select Date:</label>
+    <input type="date" id="date">
+
+    <br><br>
+
+    <!-- Button -->
+    <button onclick="predict()">Predict</button>
+
+    <br><br>
+
+    <!-- Result -->
+    <h3 id="result"></h3>
+
+    <script>
+        function predict() {
+
+            // Get values
+            const item = document.getElementById("item").value;
+            const date = document.getElementById("date").value;
+
+            // API call
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    item: item,
+                    date: date
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText =
+                    "Predicted Sales: " + data.predicted_sales;
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById("result").innerText =
+                    "Error occurred!";
+            });
+        }
+    </script>
+
+</body>
+</html>
